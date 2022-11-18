@@ -1,3 +1,4 @@
-controllers:
-    resource: ../src/Controller/
-    type: attribute
+api-todo:
+    path: /api/todo
+    controller: App\Infrastructure\EntryPoint\Api\AddTaskController
+    methods: ['POST']

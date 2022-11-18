@@ -2,15 +2,36 @@
 
 namespace App\Tests;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 
 class TodoListAcceptanceTest extends ApiTestCase
 {
-    public function testSomething(): void
+    /** @test */
+    public function asUserICanAddATaskToTheList(): void
     {
-        $response = static::createClient()->request('GET', '/');
+        $client = static::createClient();
+        $payload = [
+            'task' => 'task description'
+        ];
+        $client->request(
+            'POST',
+            '/api/todo',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload, JSON_THROW_ON_ERROR)
+        );
 
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonContains(['@id' => '/']);
+        $response = $client->request(
+                'GET',
+                '/api/todo',
+                [],
+                [],
+                ['CONTENT_TYPE' => 'application/json']
+        );
+        $expected = [
+            '[ ] 1. task description'
+        ];
+        $this->assertJsonEquals($expected, $response->getContent());
     }
 }
