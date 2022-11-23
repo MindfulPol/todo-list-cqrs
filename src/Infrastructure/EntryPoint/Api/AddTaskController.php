@@ -2,12 +2,34 @@
 
 namespace App\Infrastructure\EntryPoint\Api;
 
-use http\Client\Response;
+use App\Application\AddTask;
+use App\Application\AddTaskHandler;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AddTaskController
 {
-    public function __invoke() : Response
+    public function __construct(AddTaskHandler $addTaskHandler)
     {
-        return new Response;
+        $this->addTaskHandler = $addTaskHandler;
+    }
+
+    public function __invoke(Request $request) : Response
+    {
+        $taskDescription = $this->getTask($request);
+        $addTask = new AddTask($taskDescription);
+        ($this->addTaskHandler)($addTask);
+
+        return new JsonResponse('', Response::HTTP_CREATED);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function getTask(Request $request): mixed
+    {
+        return json_decode($request->getContent(), true)['task'];
     }
 }
