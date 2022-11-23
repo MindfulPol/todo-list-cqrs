@@ -16,22 +16,22 @@ class TodoListAcceptanceTest extends ApiTestCase
         $client->request(
             'POST',
             '/api/todo',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($payload, JSON_THROW_ON_ERROR)
+            [
+                'headers' => ['content_type' => 'application/json'],
+                'body' => json_encode($payload, JSON_THROW_ON_ERROR)
+            ]
         );
 
         $response = $client->request(
                 'GET',
                 '/api/todo',
-                [],
-                [],
-                ['CONTENT_TYPE' => 'application/json']
+                [
+                    'content_type' => 'application/json',
+                ]
         );
         $expected = [
             '[ ] 1. task description'
         ];
-        $this->assertJsonEquals($expected, $response->getContent());
+        self::assertJsonEquals($expected, $response->getContent());
     }
 }
