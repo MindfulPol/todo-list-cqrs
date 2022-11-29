@@ -26,7 +26,7 @@ class TodoListAcceptanceTest extends ApiTestCase
                 'GET',
                 '/api/todo',
                 [
-                    'content_type' => 'application/json',
+                    'headers' => ['content_type' => 'application/json']
                 ]
         );
         $expected = [
