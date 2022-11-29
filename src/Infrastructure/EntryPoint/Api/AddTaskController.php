@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AddTaskController
 {
+    private AddTaskHandler $addTaskHandler;
+
     public function __construct(AddTaskHandler $addTaskHandler)
     {
         $this->addTaskHandler = $addTaskHandler;

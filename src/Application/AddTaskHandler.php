@@ -7,5 +7,6 @@ class AddTaskHandler
     public function __invoke()
     {
         // TODO: Implement __invoke() method.
+        throw new \RuntimeException('This');
     }
 }
